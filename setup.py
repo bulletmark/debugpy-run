@@ -12,7 +12,8 @@ here = Path(__file__).resolve().parent
 setup(
     name=name,
     version='1.0',
-    description='Finds and runs debugpy for VS Code "remote attach" command line debugging.',
+    description='Finds and runs debugpy for VS Code "remote attach" '
+            'command line debugging.',
     long_description=here.joinpath('README.md').read_text(),
     long_description_content_type='text/markdown',
     url='https://github.com/bulletmark/{}'.format(name),
