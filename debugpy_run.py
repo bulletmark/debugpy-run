@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 '''
-Finds the "debugpy" program within your VSCode Python extension and then
+Finds the "debugpy" package within your VSCode Python extension and then
 runs it for "remote attach" debugging of the program/module you specify.
+If not found in extensions then tries to run the globally installed
+"debugpy".
 '''
 # Author: Mark Blakeney, July 2020
 
@@ -10,7 +12,29 @@ import argparse
 import subprocess
 import re
 from pathlib import Path
+
 PROG = 'debugpy'
+
+def find_ext_debugger():
+    'Find where debugger is located in extensions'
+    pdirs = list(Path('~').expanduser().glob(
+        '.vscode*/extensions/ms-python.python-*'))
+
+    if pdirs:
+        pdirs = [d for d in pdirs if d.is_dir()]
+
+    if not pdirs:
+        return None
+
+    def sortdir(val):
+        'Calculate a sort hash for given dir'
+        valstr = re.sub(r'^.*?([0-9])', r'\1', str(val))
+        v = valstr.split('.', maxsplit=3)
+        return f'{v[0]}.{int(v[1]):02}.{v[2]}'
+
+    extdir = sorted(pdirs, reverse=True, key=sortdir)[0]
+    pkg = extdir / f'pythonFiles/lib/python/{PROG}'
+    return f'{pkg}' if pkg.exists() else None
 
 def main():
     'Main code'
@@ -40,7 +64,7 @@ def main():
     grp.add_argument('--pid',
             help='python pid to attach and debug')
     grp.add_argument('-V', '--version', action='store_true',
-            help='output debugpy path and version')
+            help=f'output {PROG} path and version')
     opt.add_argument('args', nargs=argparse.REMAINDER,
             help='remaining arguments to debug')
 
@@ -58,30 +82,17 @@ def main():
 
     args = opt.parse_args(argslist)
 
-    pdirs = list(Path('~').expanduser().glob(
-        '.vscode*/extensions/ms-python.python-*'))
-
-    if pdirs:
-        pdirs = [d for d in pdirs if d.is_dir()]
-
-    if not pdirs:
-        return 'Can\'t locate vscode python extension dir.'
-
-    def sortdir(val):
-        'Calculate a sort hash for given dir'
-        valstr = re.sub(r'^.*?([0-9])', r'\1', str(val))
-        v = valstr.split('.', maxsplit=3)
-        return f'{v[0]}.{int(v[1]):02}.{v[2]}'
-
-    extdir = sorted(pdirs, reverse=True, key=sortdir)[0]
-    prog = extdir / f'pythonFiles/lib/python/{PROG}'
-    if not prog.exists():
-        return 'Can\'t locate vscode python extension.'
+    cmd = find_ext_debugger()
+    if not cmd:
+        pkg = PROG
+        cmd = f'-m {pkg}'
+    else:
+        pkg = cmd
 
     if args.version:
-        res = subprocess.run(f'python3 {prog} --version'.split(),
+        res = subprocess.run(f'python3 {cmd} --version'.split(),
                 universal_newlines=True, stdout=subprocess.PIPE)
-        print(f'{prog} {res.stdout.strip()}')
+        print(f'{pkg} {res.stdout.strip()}')
         return
 
     if args.program:
@@ -113,9 +124,9 @@ def main():
     cargs = (' ' + ' '.join(cargslist)) if cargslist else ''
 
     cmdargs = f'--{ctype} {args.port}{wait}{cargs}{logto} {mainargs}'
-    cmd = f'python3 {prog} {cmdargs}'.split()
+    command = f'python3 {cmd} {cmdargs}'.split()
     if args.args:
-        cmd.extend(args.args)
+        command.extend(args.args)
         xargs = ' ' + ' '.join(args.args)
     else:
         xargs = ''
@@ -125,11 +136,13 @@ def main():
     while True:
         print(msg)
         try:
-            res = subprocess.run(cmd)
-        except KeyboardInterrupt:
+            res = subprocess.run(command)
+        except Exception as e:
+            print(str(e), file=sys.stderr)
             break
-        if not args.run_on_error and res.returncode != 0:
-            break
+        else:
+            if not args.run_on_error and res.returncode != 0:
+                break
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -34,7 +34,9 @@ to it from within [VS Code](https://code.visualstudio.com/) using the
 Python "Remote Attach" debug configuration (using the default host and
 port settings). You can just `control+c` and then re-run the command
 with changed arguments using your shell history and command line editing
-facilities, for each debug run.
+facilities, for each debug run. You can also run `debugpy-run` remotely,
+with `debugpy` explicitly installed for this case, to debug from VS Code
+to a remote machine over a network.
 
 This utility was developed on Arch Linux but should work on all Linux
 systems where [VS Code](https://code.visualstudio.com/) is installed
@@ -79,9 +81,9 @@ $ sudo pip3 install .
 3. Open a terminal (either within [VS
    Code](https://code.visualstudio.com/), or external) and type:
 
-       debugpy-run my-prog args ..
+       $ debugpy-run my-program --myargs
 
-   Debugpy-run will start the `debugpy` debugger for your program,
+   Now `debugpy-run` will start the `debugpy` debugger for your program,
    output a message, and then wait to be connected by [VS
    Code](https://code.visualstudio.com/).
 
@@ -93,15 +95,55 @@ $ sudo pip3 install .
    shell history and editing commands) and then restart the debug
    session in [VS Code](https://code.visualstudio.com/).
 
+### Remote Debugging On Another Host
+
+The `debugpy-run` utility first looks to find the `debugpy` package in
+your local `~/.vscode/extensions` directory. If it fails to find that
+then `debugpy-run` next tries to import `debugpy` globally. This is is
+done so you can install both `debugpy-run` and `debugpy` on a remote
+headless server (e.g. where VS Code is not installed) and then debug a
+program on that server from VS Code on your laptop/PC remotely over the
+network.
+
+So for example, I may have a program which runs on a server which want
+to debug from VS Code on my laptop. I first make sure I install the
+necessary software on the server (you can also do this in the programs
+virtual environment of course):
+
+````
+$ sudo pip3 install debugpy
+$ sudo pip3 install debugpy-run
+````
+
+The start my program on the server using the debugger:
+````
+$ debugpy-run -p :5678 my-program --myargs
+````
+
+NOTE: We need to explicitly specify the `:port` for this case so that
+the port is opened on the external network interface so we can connect
+to it from another machine. By default, `debugpy-run`/`debugpy`
+otherwise only accept local connections.
+
+Then I go back to my laptop, ensure I have set up "Remote Attach"
+debugging configured with host = `my-server` and port = `5678`, then start
+debugging.
+
+Of course, you could start `debugpy` directly yourself on the server but
+the `debugpy-run` wrapper is more convenient to use and makes the usage
+consistent with the familiar way you start `debugpy-run` on your
+laptop/PC.
+
 ### Usage
 ```
-usage: debugpy-run [-h] [--listen | -C] [-p PORT] [-r]
-                   [--log-to PATH | --log-to-stderr] [-m MODULE] [-c CODE]
-                   [--pid PID] [-V]
-                   [program] ...
+usage: debugpy_run.py [-h] [--listen | -C] [-p PORT] [-r]
+                      [--log-to PATH | --log-to-stderr] [-m MODULE] [-c CODE]
+                      [--pid PID] [-V]
+                      [program] ...
 
-Finds the "debugpy" program within your VSCode Python extension and then runs
-it for "remote attach" debugging of the program/module you specify.
+Finds the "debugpy" package within your VSCode Python extension and then runs
+it for "remote attach" debugging of the program/module you specify. If not
+found in extensions then tries to run the globally installed "debugpy".
 
 positional arguments:
   program               python program to execute and debug
