@@ -29,10 +29,10 @@ installed then the full
 bundled with it. You open a terminal window and run this utility to
 invoke your program with arguments. The utility finds the path where
 [`debugpy`](https://github.com/microsoft/debugpy) is installed and then
-runs it for program and arguments you specify, in listen mode. Connect
-to it from within [VS Code](https://code.visualstudio.com/) using the
-Python "Remote Attach" debug configuration (using the default host and
-port settings). You can just `control+c` and then re-run the command
+runs it for the program and arguments you specify, in listen mode.
+Connect to it from within [VS Code](https://code.visualstudio.com/)
+using the Python "Remote Attach" debug configuration (using the default
+host and port settings). You can `control+c` and then re-run the command
 with changed arguments using your shell history and command line editing
 facilities, for each debug run. You can also run `debugpy-run` remotely,
 with `debugpy` explicitly installed for this case, to debug from VS Code
