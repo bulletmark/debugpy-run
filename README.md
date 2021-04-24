@@ -64,7 +64,7 @@ Or, to install from this source repository:
 ```
 $ git clone http://github.com/bulletmark/debugpy-run
 $ cd debugpy-run
-$ sudo pip3 install .
+$ sudo pip3 install -U .
 ```
 
 ### Procedure to Use
@@ -111,8 +111,8 @@ necessary software on the server (you can also do this in the programs
 virtual environment of course):
 
 ````
-$ sudo pip3 install debugpy
-$ sudo pip3 install debugpy-run
+$ sudo pip3 install -U debugpy
+$ sudo pip3 install -U debugpy-run
 ````
 
 The start my program on the server using the debugger:
