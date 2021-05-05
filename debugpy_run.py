@@ -34,7 +34,7 @@ def find_ext_debugger():
 
     extdir = sorted(pdirs, reverse=True, key=sortdir)[0]
     pkg = extdir / f'pythonFiles/lib/python/{PROG}'
-    return f'{pkg}' if pkg.exists() else None
+    return str(pkg) if pkg.exists() else None
 
 def main():
     'Main code'
@@ -47,6 +47,8 @@ def main():
             help='connect to given port rather than listen')
     opt.add_argument('-p', '--port', default='5678',
             help='[host:]port to use, default=%(default)s')
+    grp.add_argument('-g', '--global-only', action='store_true',
+            help=f'only run the globally installed {PROG}')
     opt.add_argument('-r', '--run-on-error', action='store_true',
             help='re-run program/module even on error')
     grp = opt.add_mutually_exclusive_group()
@@ -82,8 +84,10 @@ def main():
 
     args = opt.parse_args(argslist)
 
-    cmd = find_ext_debugger()
+    cmd = None if args.global_only else find_ext_debugger()
     if not cmd:
+        # We didn't find the module within the extensions so use the
+        # global module
         pkg = PROG
         cmd = f'-m {pkg}'
     else:
@@ -92,7 +96,9 @@ def main():
     if args.version:
         res = subprocess.run(f'python3 {cmd} --version'.split(),
                 universal_newlines=True, stdout=subprocess.PIPE)
-        print(f'{pkg} {res.stdout.strip()}')
+        vers = res.stdout and res.stdout.strip()
+        if vers:
+            print(f'{pkg} {res.stdout.strip()}')
         return
 
     if args.program:
@@ -115,11 +121,12 @@ def main():
         ctype = 'listen'
         wait = ' --wait-for-client'
 
-    logto = ''
     if args.log_to:
         logto = f' --log-to {args.log_to}'
     elif args.log_to_stderr:
         logto = ' --log-to-stderr'
+    else:
+        logto = ''
 
     cargs = (' ' + ' '.join(cargslist)) if cargslist else ''
 

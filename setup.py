@@ -11,7 +11,7 @@ here = Path(__file__).resolve().parent
 
 setup(
     name=name,
-    version='1.1',
+    version='1.2',
     description='Finds and runs debugpy for VS Code "remote attach" '
             'command line debugging.',
     long_description=here.joinpath('README.md').read_text(),
@@ -19,7 +19,7 @@ setup(
     url='https://github.com/bulletmark/{}'.format(name),
     author='Mark Blakeney',
     author_email='mark.blakeney@bullet-systems.net',
-    keywords='debugpy vscode code',
+    keywords='debugpy vscode code ptvsd',
     license='GPLv3',
     py_modules=[module],
     python_requires='>=3.6',
