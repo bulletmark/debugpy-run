@@ -76,7 +76,7 @@ $ sudo pip3 install -U .
    Configuration](https://code.visualstudio.com/docs/python/debugging#_initialize-configurations)
    in your `launch.json`. Specify "Remote Attach" and just accept the
    default arguments (i.e. host = `localhost`, port = `5678`). You only
-   have to do this once.
+   have to do this once for each project.
 
 3. Open a terminal (either within [VS
    Code](https://code.visualstudio.com/), or external) and type:
