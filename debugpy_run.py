@@ -43,6 +43,8 @@ def main():
     grp = opt.add_mutually_exclusive_group()
     grp.add_argument('--listen', action='store_true', default=True,
             help='listen on given port, default=True')
+    opt.add_argument('-W', '--no-wait', action='store_true',
+            help='do not wait on listen for client, start immediately')
     grp.add_argument('-C', '--connect', action='store_true',
             help='connect to given port rather than listen')
     opt.add_argument('-p', '--port', default='5678',
@@ -51,8 +53,6 @@ def main():
             help=f'only run the globally installed {PROG}')
     opt.add_argument('-r', '--run-on-error', action='store_true',
             help='re-run program/module even on error')
-    opt.add_argument('--no-wait', action='store_true',
-            help='do not wait for the client to connect, start execution immediately')
     grp = opt.add_mutually_exclusive_group()
     grp.add_argument('--log-to', metavar='PATH',
             help='log to given path')
@@ -121,9 +121,7 @@ def main():
         wait = ''
     else:
         ctype = 'listen'
-        wait = ' --wait-for-client'
-    if args.no_wait:
-        wait = ''
+        wait = '' if args.no_wait else '--wait-for-client'
 
     if args.log_to:
         logto = f' --log-to {args.log_to}'
