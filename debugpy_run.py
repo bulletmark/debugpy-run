@@ -121,7 +121,7 @@ def main():
         wait = ''
     else:
         ctype = 'listen'
-        wait = '' if args.no_wait else '--wait-for-client'
+        wait = '' if args.no_wait else ' --wait-for-client'
 
     if args.log_to:
         logto = f' --log-to {args.log_to}'
