@@ -136,10 +136,10 @@ laptop/PC.
 
 ### Usage
 ```
-usage: debugpy_run.py [-h] [--listen | -C] [-p PORT] [-r]
-                      [--log-to PATH | --log-to-stderr] [-m MODULE] [-c CODE]
-                      [--pid PID] [-V]
-                      [program] ...
+usage: debugpy-run [-h] [--listen] [-W] [-C] [-p PORT] [-g] [-r]
+                   [--log-to PATH | --log-to-stderr]
+                   [-m MODULE | -c CODE | --pid PID | -V]
+                   [program] ...
 
 Finds the "debugpy" package within your VSCode Python extension and then runs
 it for "remote attach" debugging of the program/module you specify. If not
@@ -149,11 +149,13 @@ positional arguments:
   program               python program to execute and debug
   args                  remaining arguments to debug
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --listen              listen on given port, default=True
+  -W, --no-wait         do not wait on listen for client, start immediately
   -C, --connect         connect to given port rather than listen
   -p PORT, --port PORT  [host:]port to use, default=5678
+  -g, --global-only     only run the globally installed debugpy
   -r, --run-on-error    re-run program/module even on error
   --log-to PATH         log to given path
   --log-to-stderr       log to stderr
