@@ -59,8 +59,6 @@ def main():
     grp.add_argument('--log-to-stderr', action='store_true',
             help='log to stderr')
     grp = opt.add_mutually_exclusive_group()
-    grp.add_argument('program', nargs='?',
-            help='python program to execute and debug')
     grp.add_argument('-m', '--module',
             help='python module to execute and debug')
     grp.add_argument('-c', '--code',
@@ -69,6 +67,8 @@ def main():
             help='python pid to attach and debug')
     grp.add_argument('-V', '--version', action='store_true',
             help=f'output {PROG} path and version')
+    opt.add_argument('program', nargs='?',
+            help='python program to execute and debug')
     opt.add_argument('args', nargs=argparse.REMAINDER,
             help='remaining arguments to debug')
 
@@ -102,6 +102,10 @@ def main():
         if vers:
             print(f'{pkg} {res.stdout.strip()}')
         return
+
+    if args.program and (args.module or args.code or args.pid):
+        args.args.insert(0, args.program)
+        args.program = None
 
     if args.program:
         if not Path(args.program).exists():
