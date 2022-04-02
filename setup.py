@@ -11,7 +11,7 @@ here = Path(__file__).resolve().parent
 
 setup(
     name=name,
-    version='1.3.1',
+    version='1.4',
     description='Finds and runs debugpy for VS Code "remote attach" '
             'command line debugging.',
     long_description=here.joinpath('README.md').read_text(),
