@@ -31,12 +31,13 @@ invoke your program with arguments. The utility finds the path where
 [`debugpy`](https://github.com/microsoft/debugpy) is installed and then
 runs it for the program and arguments you specify, in listen mode.
 Connect to it from within [VS Code](https://code.visualstudio.com/)
-using the Python "Remote Attach" debug configuration (using the default
+using the Python _Remote Attach_ debug configuration (using the default
 host and port settings). You can `control+c` and then re-run the command
 with changed arguments using your shell history and command line editing
 facilities, for each debug run. You can also run `debugpy-run` remotely,
-with `debugpy` explicitly installed for this case, to debug from VS Code
-to a remote machine over a network.
+with `debugpy` explicitly installed for this case, to debug from [VS
+Code](https://code.visualstudio.com/) to a remote machine over a
+network.
 
 This utility was developed on Arch Linux but should work on all Linux
 systems where [VS Code](https://code.visualstudio.com/) is installed
@@ -74,7 +75,7 @@ $ sudo pip3 install -U .
 
 2. Ensure you have added a [Debugging
    Configuration](https://code.visualstudio.com/docs/python/debugging#_initialize-configurations)
-   in your `launch.json`. Specify "Remote Attach" and just accept the
+   in your `launch.json`. Specify _Remote Attach_ and just accept the
    default arguments (i.e. host = `localhost`, port = `5678`). You only
    have to do this once for each project.
 
@@ -88,7 +89,7 @@ $ sudo pip3 install -U .
    Code](https://code.visualstudio.com/).
 
 4. In [VS Code](https://code.visualstudio.com/), start debugging, e.g.
-   set a breakpoint then start the Remote Attach debug session.
+   set a breakpoint then start the _Remote Attach_ debug session.
 
 5. At any point you can `control+c` the terminal command and restart it
    with new command line arguments (e.g. using the convenience of your
@@ -101,14 +102,15 @@ The `debugpy-run` utility first looks to find the `debugpy` package in
 your local `~/.vscode/extensions` directory. If it fails to find that
 then `debugpy-run` next tries to import `debugpy` globally. This is is
 done so you can install both `debugpy-run` and `debugpy` on a remote
-headless server (e.g. where VS Code is not installed) and then debug a
-program on that server from VS Code on your laptop/PC remotely over the
-network.
+headless server (e.g. where [VS Code](https://code.visualstudio.com/) is
+not installed) and then debug a program on that server from [VS
+Code](https://code.visualstudio.com/) on your laptop/PC remotely over
+the network.
 
 So for example, I may have a program which runs on a server which want
-to debug from VS Code on my laptop. I first make sure I install the
-necessary software on the server (you can also do this in the programs
-virtual environment of course):
+to debug from [VS Code](https://code.visualstudio.com/) on my laptop. I
+first make sure I install the necessary software on the server (you can
+also do this in the programs virtual environment of course):
 
 ````
 $ sudo pip3 install -U debugpy
@@ -125,7 +127,7 @@ the port is opened on the external network interface so we can connect
 to it from another machine. By default, `debugpy-run`/`debugpy`
 otherwise only accept local connections.
 
-Then I go back to my laptop, ensure I have set up "Remote Attach"
+Then I go back to my laptop, ensure I have set up _Remote Attach_
 debugging configured with host = `my-server` and port = `5678`, then start
 debugging.
 
@@ -133,6 +135,17 @@ Of course, you could start `debugpy` directly yourself on the server but
 the `debugpy-run` wrapper is more convenient to use and makes the usage
 consistent with the familiar way you start `debugpy-run` on your
 laptop/PC.
+
+### Debugging A Program Running As Root
+
+Another application of `debugpy-run` is that you can, as your normal
+user, easily use [VS Code](https://code.visualstudio.com/) to debug a
+program you run as root. E.g. run a program using `sudo`:
+
+    $ sudo debugpy-run my-program --myargs
+
+Now you can just _Remote Attach_ to it in [VS
+Code](https://code.visualstudio.com/) as your normal user.
 
 ### Usage
 ```
