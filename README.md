@@ -1,4 +1,6 @@
 ## DEBUGPY-RUN
+[![PyPi](https://img.shields.io/pypi/v/debugpy-run)](https://pypi.org/project/debugpy-run/)
+[![AUR](https://img.shields.io/aur/version/debugpy-run)](https://aur.archlinux.org/packages/debugpy-run/)
 
 This utility facilitates debugging a [Python](https://www.python.org/)
 command line program using [Python
