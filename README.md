@@ -48,7 +48,7 @@ extension](https://code.visualstudio.com/docs/languages/python). The
 latest version and documentation is available at
 https://github.com/bulletmark/debugpy-run.
 
-### Installation
+## Installation
 
 Arch users can install [debugpy-run from the
 AUR](https://aur.archlinux.org/packages/debugpy-run/).
@@ -70,7 +70,7 @@ $ cd debugpy-run
 $ sudo pip3 install -U .
 ```
 
-### Procedure to Use
+## Procedure to Use
 
 1. Open [VS Code](https://code.visualstudio.com/) for the directory
    where your command line program is located.
@@ -84,11 +84,15 @@ $ sudo pip3 install -U .
 3. Open a terminal (either within [VS
    Code](https://code.visualstudio.com/), or external) and type:
 
-       $ debugpy-run my-program --myargs
+       $ debugpy-run my-program -- --myargs
 
    Now `debugpy-run` will start the `debugpy` debugger for your program,
    output a message, and then wait to be connected by [VS
    Code](https://code.visualstudio.com/).
+
+    :warning: As seen in the above example, you need to specify `--`
+    after your program/module name so that debugpy-run knows where it's
+    own options end, and the target options start.
 
 4. In [VS Code](https://code.visualstudio.com/), start debugging, e.g.
    set a breakpoint then start the _Remote Attach_ debug session.
@@ -98,7 +102,7 @@ $ sudo pip3 install -U .
    shell history and editing commands) and then restart the debug
    session in [VS Code](https://code.visualstudio.com/).
 
-### Remote Debugging On Another Host
+## Remote Debugging On Another Host
 
 The `debugpy-run` utility first looks to find the `debugpy` package in
 your local `~/.vscode/extensions` directory. If it fails to find that
@@ -121,7 +125,7 @@ $ sudo pip3 install -U debugpy-run
 
 The start my program on the server using the debugger:
 ````
-$ debugpy-run -p :5678 my-program --myargs
+$ debugpy-run -p :5678 my-program -- --myargs
 ````
 
 NOTE: We need to explicitly specify the `:port` for this case so that
@@ -138,23 +142,26 @@ the `debugpy-run` wrapper is more convenient to use and makes the usage
 consistent with the familiar way you start `debugpy-run` on your
 laptop/PC.
 
-### Debugging A Program Running As Root
+## Debugging A Program Running As Root
 
 Another application of `debugpy-run` is that you can, as your normal
 user, easily use [VS Code](https://code.visualstudio.com/) to debug a
 program you run as root. E.g. run a program using `sudo`:
 
-    $ sudo debugpy-run my-program --myargs
+    $ sudo debugpy-run my-program -- --myargs
 
 Now you can just _Remote Attach_ to it in [VS
 Code](https://code.visualstudio.com/) as your normal user.
 
-### Usage
+## Usage
+
+Type `debugpy-run -h` to view the usage summary:
+
 ```
 usage: debugpy-run [-h] [--listen] [-W] [-C] [-p PORT] [-g] [-r]
-                   [--log-to PATH | --log-to-stderr]
-                   [-m MODULE | -c CODE | --pid PID | -V]
-                   [program] ...
+                      [--log-to PATH | --log-to-stderr]
+                      [-m MODULE | -c CODE | --pid PID | -V]
+                      [program] ...
 
 Finds the "debugpy" package within your VSCode Python extension and then runs
 it for "remote attach" debugging of the program/module you specify. If not
@@ -181,7 +188,7 @@ options:
   -V, --version         output debugpy path and version
 ```
 
-### License
+## License
 
 Copyright (C) 2021 Mark Blakeney. This program is distributed under the
 terms of the GNU General Public License.
