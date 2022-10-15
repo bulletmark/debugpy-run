@@ -12,14 +12,18 @@ import argparse
 import subprocess
 import re
 from pathlib import Path
+from packaging import version
+
 
 PROG = 'debugpy'
+EXTNAME = 'ms-python.python'
 
 def find_ext_debugger():
     'Find where debugger is located in extensions'
     pdirs = list(Path('~').expanduser().glob(
-        '.vscode*/extensions/ms-python.python-*'))
+        f'.vscode*/extensions/{EXTNAME}-*'))
 
+    # Filter out to dirs only
     if pdirs:
         pdirs = [d for d in pdirs if d.is_dir()]
 
@@ -28,9 +32,9 @@ def find_ext_debugger():
 
     def sortdir(val):
         'Calculate a sort hash for given dir'
-        valstr = re.sub(r'^.*?([0-9])', r'\1', str(val))
-        v = valstr.split('.', maxsplit=3)
-        return f'{v[0]}.{int(v[1]):02}.{v[2]}'
+        sval = re.sub(f'^.*/{EXTNAME}-', '', str(val))
+        sval = re.sub('/.*$', '', sval)
+        return version.parse(sval)
 
     extdir = sorted(pdirs, reverse=True, key=sortdir)[0]
     pkg = extdir / f'pythonFiles/lib/python/{PROG}'

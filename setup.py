@@ -11,7 +11,7 @@ here = Path(__file__).resolve().parent
 
 setup(
     name=name,
-    version='1.5',
+    version='1.5.1',
     description='Finds and runs debugpy for VS Code "remote attach" '
             'command line debugging.',
     long_description=here.joinpath('README.md').read_text(),
@@ -23,6 +23,7 @@ setup(
     license='GPLv3',
     py_modules=[module],
     python_requires='>=3.6',
+    install_requires=['packaging'],
     classifiers=[
         'Programming Language :: Python :: 3',
     ],
