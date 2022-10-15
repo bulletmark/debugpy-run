@@ -7,6 +7,7 @@ all:
 
 install:
 	pip3 install -U --root-user-action=ignore .
+	@make clean
 
 uninstall:
 	pip3 uninstall --root-user-action=ignore $(NAME)
