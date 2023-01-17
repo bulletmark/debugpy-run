@@ -91,7 +91,7 @@ $ sudo pip3 install -U .
    output a message, and then wait to be connected by [VS
    Code](https://code.visualstudio.com/).
 
-    :warning: As seen in the above example, you need to specify `--`
+    :warning: As seen in the above example, you should specify `--`
     after your program/module name so that debugpy-run knows where it's
     own options end, and the target options start.
 
