@@ -56,19 +56,17 @@ AUR](https://aur.archlinux.org/packages/debugpy-run/).
 Python 3.6 or later is required. Also, the Python
 [packaging](https://pypi.org/project/packaging/) module is required.
 Note [debugpy-run is on PyPI](https://pypi.org/project/debugpy-run/) so
-just ensure that `python3-pip` and `python3-wheel` are installed then
-type the following to install (or upgrade):
+just ensure that [`pipx`](https://pypa.github.io/pipx/) is installed
+then type the following:
 
 ```
-$ sudo pip3 install -U debugpy-run
+$ pipx install debugpy-run
 ```
 
-Or, to install from this source repository:
+To upgrade:
 
 ```
-$ git clone http://github.com/bulletmark/debugpy-run
-$ cd debugpy-run
-$ sudo pip3 install -U .
+$ pipx upgrade debugpy-run
 ```
 
 ## Procedure to Use
