@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "debugpy-run"
+description = "Finds and runs debugpy for VS Code \"remote attach\" command line debugging"
+readme = "README.md"
+requires-python = ">=3.6"
+keywords = ["debugpy", "vscode", "code", "ptvsd"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+]
+dynamic = ["version"]
+dependencies = [
+  "packaging",
+]
+
+[[project.authors]]
+name = "Mark Blakeney"
+email = "mark.blakeney@bullet-systems.net"
+
+[project.urls]
+Homepage = "https://github.com/bulletmark/debugpy-run"
+
+[project.scripts]
+debugpy-run = "debugpy_run:main"
+
+[project.license]
+text = "GPLv3"
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+
+[tool.mypy]
+implicit_optional = true
+no_strict_optional = true
+warn_no_return = false
+allow_untyped_globals = true
+allow_redefinition = true
+
+[tool.edit-lint]
+linters = [
+  "ruff",
+  "flake8",
+  "mypy",
+  "pyright",
+]
+
+# vim:se sw=2:

@@ -7,13 +7,13 @@ If not found in extensions then tries to run the globally installed
 '''
 # Author: Mark Blakeney, July 2020
 
-import sys
 import argparse
-import subprocess
 import re
+import subprocess
+import sys
 from pathlib import Path
-from packaging import version
 
+from packaging import version
 
 PROG = 'debugpy'
 EXTNAME = 'ms-python.python'
