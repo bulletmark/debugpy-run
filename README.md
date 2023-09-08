@@ -69,6 +69,12 @@ To upgrade:
 $ pipx upgrade debugpy-run
 ```
 
+To remove:
+
+```
+$ pipx uninstall debugpy-run
+```
+
 ## Procedure to Use
 
 1. Open [VS Code](https://code.visualstudio.com/) for the directory
@@ -118,8 +124,8 @@ first make sure I install the necessary software on the server (you can
 also do this in the programs virtual environment of course):
 
 ````
-$ sudo pip3 install -U debugpy
-$ sudo pip3 install -U debugpy-run
+$ pipx install debugpy
+$ pipx install debugpy-run
 ````
 
 The start my program on the server using the debugger:
