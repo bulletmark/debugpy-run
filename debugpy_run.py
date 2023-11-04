@@ -141,7 +141,7 @@ def main():
     cargs = (' ' + ' '.join(cargslist)) if cargslist else ''
 
     cmdargs = f'--{ctype} {args.port}{wait}{cargs}{logto} {mainargs}'
-    command = f'python3 {cmd} {cmdargs}'.split()
+    command = f'python3 -Xfrozen_modules=off {cmd} {cmdargs}'.split()
     if args.args:
         command.extend(args.args)
         xargs = ' ' + ' '.join(args.args)
