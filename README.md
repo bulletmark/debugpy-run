@@ -99,6 +99,12 @@ $ pipx uninstall debugpy-run
     after your program/module name so that debugpy-run knows where it's
     own options end, and the target options start.
 
+    :warning: You must run `my-program` from same work directory as VS
+    Code is using otherwise VS Code will not correlate your source file
+    path with the code being run by debugpy. I.e. if the program is
+    located at `src/my-program` with respect to the work directory then
+    you must run it as `debugpy-run src/my-program -- --myargs`
+
 4. In [VS Code](https://code.visualstudio.com/), start debugging, e.g.
    set a breakpoint then start the _Remote Attach_ debug session.
 

@@ -17,6 +17,7 @@ from packaging import version
 
 PROG = 'debugpy'
 EXTNAME = 'ms-python.python'
+EXTOPTS = '-Xfrozen_modules=off'
 
 def find_ext_debugger():
     'Find where debugger is located in extensions'
@@ -94,17 +95,14 @@ def main():
     if not cmd:
         # We didn't find the module within the extensions so use the
         # global module
-        pkg = PROG
-        cmd = f'-m {pkg}'
-    else:
-        pkg = cmd
+        cmd = f'-m {PROG}'
 
     if args.version:
-        res = subprocess.run(f'python3 {cmd} --version'.split(),
+        res = subprocess.run(f'python3 {EXTOPTS} {cmd} --version'.split(),
                 universal_newlines=True, stdout=subprocess.PIPE)
         vers = res.stdout and res.stdout.strip()
         if vers:
-            print(f'{pkg} {res.stdout.strip()}')
+            print(f'python3 {cmd} {res.stdout.strip()}')
         return
 
     if args.program and (args.module or args.code or args.pid):
@@ -141,14 +139,14 @@ def main():
     cargs = (' ' + ' '.join(cargslist)) if cargslist else ''
 
     cmdargs = f'--{ctype} {args.port}{wait}{cargs}{logto} {mainargs}'
-    command = f'python3 -Xfrozen_modules=off {cmd} {cmdargs}'.split()
+    command = f'python3 {EXTOPTS} {cmd} {cmdargs}'.split()
     if args.args:
         command.extend(args.args)
         xargs = ' ' + ' '.join(args.args)
     else:
         xargs = ''
 
-    msg = f'Running {PROG} {cmdargs}{xargs}'
+    msg = f'Running python3 {cmd} {cmdargs}{xargs}'
 
     while True:
         print(msg)
