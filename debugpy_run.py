@@ -34,10 +34,11 @@ def find_ext_debugger():
     def sortdir(val):
         'Calculate a sort hash for given dir'
         sval = re.sub(f'^.*/{EXTNAME}-', '', str(val))
-        sval = re.sub('/.*$', '', sval)
+        sval = re.sub('[-/].*$', '', sval)
         return version.parse(sval)
 
-    extdir = sorted(pdirs, reverse=True, key=sortdir)[0]
+    extdir = sorted(pdirs, reverse=True, key=sortdir)[0] \
+            if len(pdirs) > 1 else pdirs[0]
     pkg = extdir / f'pythonFiles/lib/python/{PROG}'
     return str(pkg) if pkg.exists() else None
 
