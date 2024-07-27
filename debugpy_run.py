@@ -16,7 +16,8 @@ from pathlib import Path
 from packaging import version
 
 PROG = 'debugpy'
-EXTNAME = 'ms-python.python'
+EXTNAME = f'ms-python.{PROG}'
+EXTSUBPATH = f'bundled/libs/{PROG}'
 EXTOPTS = '-Xfrozen_modules=off'
 
 def find_ext_debugger():
@@ -39,7 +40,7 @@ def find_ext_debugger():
 
     extdir = sorted(pdirs, reverse=True, key=sortdir)[0] \
             if len(pdirs) > 1 else pdirs[0]
-    pkg = extdir / f'pythonFiles/lib/python/{PROG}'
+    pkg = extdir / EXTSUBPATH
     return str(pkg) if pkg.exists() else None
 
 def main():
