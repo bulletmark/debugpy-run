@@ -169,14 +169,15 @@ Code](https://code.visualstudio.com/) as your normal user.
 Type `debugpy-run -h` to view the usage summary:
 
 ```
-usage: debugpy-run [-h] [--listen] [-W] [-C] [-p PORT] [-g] [-r]
+usage: debugpy-run [-h] [--listen] [-W] [-C] [-p PORT] [-E] [-A] [-r]
                       [--log-to PATH | --log-to-stderr]
                       [-m MODULE | -c CODE | --pid PID | -V]
                       [program] ...
 
 Finds the "debugpy" package within your VSCode Python extension and then runs
 it for "remote attach" debugging of the program/module you specify. If not
-found in extensions then tries to run the globally installed "debugpy".
+found in extensions, or bundled with this app, then tries to run the
+global/venv installed "debugpy".
 
 positional arguments:
   program               python program to execute and debug
@@ -188,7 +189,8 @@ options:
   -W, --no-wait         do not wait on listen for client, start immediately
   -C, --connect         connect to given port rather than listen
   -p PORT, --port PORT  [host:]port to use, default=5678
-  -g, --global-only     only run the globally installed debugpy
+  -E, --no-extension    don't use the debugpy bundled in the extension
+  -A, --no-app          don't use the debugpy bundled in this app
   -r, --run-on-error    re-run program/module even on error
   --log-to PATH         log to given path
   --log-to-stderr       log to stderr

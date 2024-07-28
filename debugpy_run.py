@@ -2,51 +2,64 @@
 '''
 Finds the "debugpy" package within your VSCode Python extension and then
 runs it for "remote attach" debugging of the program/module you specify.
-If not found in extensions then tries to run the globally installed
-"debugpy".
+If not found in extensions, or bundled with this app, then tries to run
+the global/venv installed "debugpy".
 '''
 # Author: Mark Blakeney, July 2020
-
 import argparse
 import re
+import site
 import subprocess
 import sys
+from argparse import Namespace
 from pathlib import Path
 
-from packaging import version
+from packaging.version import Version, parse
 
 PROG = 'debugpy'
 EXTNAME = f'ms-python.{PROG}'
 EXTSUBPATH = f'bundled/libs/{PROG}'
 EXTOPTS = '-Xfrozen_modules=off'
 
-def find_ext_debugger():
-    'Find where debugger is located in extensions'
-    pdirs = list(Path('~').expanduser().glob(
-        f'.vscode*/extensions/{EXTNAME}-*'))
+def sortdir(val) -> Version:
+    'Calculate a sort hash for given dir'
+    sval = re.sub(f'^.*/{EXTNAME}-', '', str(val))
+    sval = re.sub('[-/].*$', '', sval)
+    return parse(sval)
 
-    # Filter out to dirs only
-    if pdirs:
-        pdirs = [d for d in pdirs if d.is_dir()]
+def find_debugger(args: Namespace) -> str:
+    'Return which debugger to use'
+    # First, look for module bundled with the extension
+    if not args.no_extension:
+        pdirs = list(Path('~').expanduser().glob(
+            f'.vscode*/extensions/{EXTNAME}-*'))
 
-    if not pdirs:
-        return None
+        # Filter out to dirs only
+        if pdirs:
+            pdirs = [d for d in pdirs if d.is_dir()]
 
-    def sortdir(val):
-        'Calculate a sort hash for given dir'
-        sval = re.sub(f'^.*/{EXTNAME}-', '', str(val))
-        sval = re.sub('[-/].*$', '', sval)
-        return version.parse(sval)
+        if pdirs:
+            extdir = sorted(pdirs, reverse=True, key=sortdir)[0] \
+                    if len(pdirs) > 1 else pdirs[0]
+            pkg = extdir / EXTSUBPATH
 
-    extdir = sorted(pdirs, reverse=True, key=sortdir)[0] \
-            if len(pdirs) > 1 else pdirs[0]
-    pkg = extdir / EXTSUBPATH
-    return str(pkg) if pkg.exists() else None
+            if pkg.exists():
+                return str(pkg)
+
+    # Second, look for debugpy module bundled with this program
+    if not args.no_app:
+        for path in site.getsitepackages():
+            d = Path(path) / PROG
+            if d.exists():
+                return str(d)
+
+    # Third, we didn't find the module elsewhere so use the global module
+    return f'-m {PROG}'
 
 def main():
     'Main code'
     # Process command line options
-    opt = argparse.ArgumentParser(description=__doc__.strip())
+    opt = argparse.ArgumentParser(description=__doc__)
     grp = opt.add_mutually_exclusive_group()
     grp.add_argument('--listen', action='store_true', default=True,
             help='listen on given port, default=True')
@@ -56,8 +69,10 @@ def main():
             help='connect to given port rather than listen')
     opt.add_argument('-p', '--port', default='5678',
             help='[host:]port to use, default=%(default)s')
-    grp.add_argument('-g', '--global-only', action='store_true',
-            help=f'only run the globally installed {PROG}')
+    grp.add_argument('-E', '--no-extension', action='store_true',
+            help=f'don\'t use the {PROG} bundled in the extension')
+    grp.add_argument('-A', '--no-app', action='store_true',
+            help=f'don\'t use the {PROG} bundled in this app')
     opt.add_argument('-r', '--run-on-error', action='store_true',
             help='re-run program/module even on error')
     grp = opt.add_mutually_exclusive_group()
@@ -93,11 +108,7 @@ def main():
 
     args = opt.parse_args(argslist)
 
-    cmd = None if args.global_only else find_ext_debugger()
-    if not cmd:
-        # We didn't find the module within the extensions so use the
-        # global module
-        cmd = f'-m {PROG}'
+    cmd = find_debugger(args)
 
     if args.version:
         res = subprocess.run(f'python3 {EXTOPTS} {cmd} --version'.split(),
