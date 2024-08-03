@@ -169,9 +169,9 @@ Code](https://code.visualstudio.com/) as your normal user.
 Type `debugpy-run -h` to view the usage summary:
 
 ```
-usage: debugpy-run [-h] [--listen] [-W] [-C] [-p PORT] [-E] [-A] [-r]
+usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-E] [-A] [-r]
                       [--log-to PATH | --log-to-stderr]
-                      [-m MODULE | -c CODE | --pid PID | -V]
+                      [-m MODULE | -c CODE | --pid PID] [-V]
                       [program] ...
 
 Finds the "debugpy" package within your VSCode Python extension and then runs
@@ -186,8 +186,8 @@ positional arguments:
 options:
   -h, --help            show this help message and exit
   --listen              listen on given port, default=True
-  -W, --no-wait         do not wait on listen for client, start immediately
   -C, --connect         connect to given port rather than listen
+  -W, --no-wait         do not wait on listen for client, start immediately
   -p PORT, --port PORT  [host:]port to use, default=5678
   -E, --no-extension    don't use the debugpy bundled in the extension
   -A, --no-app          don't use the debugpy bundled in this app

@@ -6,12 +6,11 @@ If not found in extensions, or bundled with this app, then tries to run
 the global/venv installed "debugpy".
 '''
 # Author: Mark Blakeney, July 2020
-import argparse
 import re
 import site
 import subprocess
 import sys
-from argparse import Namespace
+from argparse import REMAINDER, ArgumentParser, Namespace
 from pathlib import Path
 
 from packaging.version import Version, parse
@@ -59,19 +58,19 @@ def find_debugger(args: Namespace) -> str:
 def main():
     'Main code'
     # Process command line options
-    opt = argparse.ArgumentParser(description=__doc__)
+    opt = ArgumentParser(description=__doc__)
     grp = opt.add_mutually_exclusive_group()
     grp.add_argument('--listen', action='store_true', default=True,
             help='listen on given port, default=True')
-    opt.add_argument('-W', '--no-wait', action='store_true',
-            help='do not wait on listen for client, start immediately')
     grp.add_argument('-C', '--connect', action='store_true',
             help='connect to given port rather than listen')
+    opt.add_argument('-W', '--no-wait', action='store_true',
+            help='do not wait on listen for client, start immediately')
     opt.add_argument('-p', '--port', default='5678',
             help='[host:]port to use, default=%(default)s')
-    grp.add_argument('-E', '--no-extension', action='store_true',
+    opt.add_argument('-E', '--no-extension', action='store_true',
             help=f'don\'t use the {PROG} bundled in the extension')
-    grp.add_argument('-A', '--no-app', action='store_true',
+    opt.add_argument('-A', '--no-app', action='store_true',
             help=f'don\'t use the {PROG} bundled in this app')
     opt.add_argument('-r', '--run-on-error', action='store_true',
             help='re-run program/module even on error')
@@ -87,11 +86,11 @@ def main():
             help='python code to execute and debug')
     grp.add_argument('--pid',
             help='python pid to attach and debug')
-    grp.add_argument('-V', '--version', action='store_true',
+    opt.add_argument('-V', '--version', action='store_true',
             help=f'output {PROG} path and version')
     opt.add_argument('program', nargs='?',
             help='python program to execute and debug')
-    opt.add_argument('args', nargs=argparse.REMAINDER,
+    opt.add_argument('args', nargs=REMAINDER,
             help='remaining arguments to debug')
 
     # Split out special case configure arguments
