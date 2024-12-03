@@ -154,11 +154,8 @@ def main():
     command = f'python3 {EXTOPTS} {cmd} {cmdargs}'.split()
     if args.args:
         command.extend(args.args)
-        xargs = ' ' + ' '.join(args.args)
-    else:
-        xargs = ''
 
-    msg = f'Running python3 {cmd} {cmdargs}{xargs}'
+    msg = f'Running {" ".join(command)}'
 
     while True:
         print(msg)
