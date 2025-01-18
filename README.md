@@ -56,23 +56,23 @@ AUR](https://aur.archlinux.org/packages/debugpy-run/).
 Python 3.6 or later is required. Also, the Python
 [packaging](https://pypi.org/project/packaging/) module is required.
 Note [debugpy-run is on PyPI](https://pypi.org/project/debugpy-run/) so
-just ensure that [`pipx`](https://pypa.github.io/pipx/) is installed
-then type the following:
+the easiest way to install it is to use [`uv tool`][uvtool] (or
+[`pipx`][pipx] or [`pipxu`][pipxu]).
 
-```
-$ pipx install debugpy-run
+```sh
+$ uv tool install debugpy-run
 ```
 
 To upgrade:
 
-```
-$ pipx upgrade debugpy-run
+```sh
+$ uv tool upgrade debugpy-run
 ```
 
-To remove:
+To uninstall:
 
-```
-$ pipx uninstall debugpy-run
+```sh
+$ uv tool uninstall debugpy-run
 ```
 
 ## Procedure to Use
@@ -211,5 +211,9 @@ This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 Public License at <http://www.gnu.org/licenses/> for more details.
+
+[pipx]: https://github.com/pypa/pipx
+[pipxu]: https://github.com/bulletmark/pipxu
+[uvtool]: https://docs.astral.sh/uv/guides/tools/#installing-tools
 
 <!-- vim: se ai syn=markdown: -->
