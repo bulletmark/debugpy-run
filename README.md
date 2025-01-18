@@ -169,9 +169,9 @@ Code](https://code.visualstudio.com/) as your normal user.
 Type `debugpy-run -h` to view the usage summary:
 
 ```
-usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-E] [-A] [-r]
-                      [--log-to PATH | --log-to-stderr]
-                      [-m MODULE | -c CODE | --pid PID] [-V]
+usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-E] [-r]
+                      [--log-to PATH | --log-to-stderr] [-m MODULE | -c CODE |
+                      --pid PID] [-V]
                       [program] ...
 
 Finds the "debugpy" package within your VSCode Python extension and then runs
@@ -180,25 +180,23 @@ found in extensions, or bundled with this app, then tries to run the
 global/venv installed "debugpy".
 
 positional arguments:
-  program               python program to execute and debug
-  args                  remaining arguments to debug
+  program              python program to execute and debug
+  args                 remaining arguments to debug
 
 options:
-  -h, --help            show this help message and exit
-  --listen              listen on given port, default=True
-  -C, --connect         connect to given port rather than listen
-  -W, --no-wait         do not wait on listen for client, start immediately
-  -p PORT, --port PORT  [host:]port to use, default=5678
-  -E, --no-extension    don't use the debugpy bundled in the extension
-  -A, --no-app          don't use the debugpy bundled in this app
-  -r, --run-on-error    re-run program/module even on error
-  --log-to PATH         log to given path
-  --log-to-stderr       log to stderr
-  -m MODULE, --module MODULE
-                        python module to execute and debug
-  -c CODE, --code CODE  python code to execute and debug
-  --pid PID             python pid to attach and debug
-  -V, --version         output debugpy path and version
+  -h, --help           show this help message and exit
+  --listen             listen on given port, default=True
+  -C, --connect        connect to given port rather than listen
+  -W, --no-wait        do not wait on listen for client, start immediately
+  -p, --port PORT      [host:]port to use, default=5678
+  -E, --no-extension   don't use the debugpy bundled in the extension
+  -r, --run-on-error   re-run program/module even on error
+  --log-to PATH        log to given path
+  --log-to-stderr      log to stderr
+  -m, --module MODULE  python module to execute and debug
+  -c, --code CODE      python code to execute and debug
+  --pid PID            python pid to attach and debug
+  -V, --version        output debugpy path and version
 ```
 
 ## License

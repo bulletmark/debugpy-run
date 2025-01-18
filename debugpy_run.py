@@ -1,13 +1,12 @@
 #!/usr/bin/python3
 '''
-Finds the "debugpy" package within your VSCode Python extension and then
-runs it for "remote attach" debugging of the program/module you specify.
-If not found in extensions, or bundled with this app, then tries to run
-the global/venv installed "debugpy".
+Finds the "debugpy" package within your VSCode Python extension and then runs
+it for "remote attach" debugging of the program/module you specify. If not
+found in extensions, or bundled with this app, then tries to run the
+global/venv installed "debugpy".
 '''
 # Author: Mark Blakeney, July 2020
 import re
-import site
 import subprocess
 import sys
 from argparse import REMAINDER, ArgumentParser, Namespace
@@ -28,7 +27,7 @@ def sortdir(val) -> Version:
 
 def find_debugger(args: Namespace) -> str:
     'Return which debugger to use'
-    # First, look for module bundled with the extension
+    # First look for module bundled with the extension
     if not args.no_extension:
         pdirs = list(Path('~').expanduser().glob(
             f'.vscode*/extensions/{EXTNAME}-*'))
@@ -45,14 +44,7 @@ def find_debugger(args: Namespace) -> str:
             if pkg.exists():
                 return str(pkg)
 
-    # Second, look for debugpy module bundled with this program
-    if not args.no_app:
-        for path in site.getsitepackages():
-            d = Path(path) / PROG
-            if d.exists():
-                return str(d)
-
-    # Third, we didn't find the module elsewhere so use the global module
+    # Otherwise we didn't find the vscode module so use the global module
     return f'-m {PROG}'
 
 def main():
@@ -70,8 +62,6 @@ def main():
             help='[host:]port to use, default=%(default)s')
     opt.add_argument('-E', '--no-extension', action='store_true',
             help=f'don\'t use the {PROG} bundled in the extension')
-    opt.add_argument('-A', '--no-app', action='store_true',
-            help=f'don\'t use the {PROG} bundled in this app')
     opt.add_argument('-r', '--run-on-error', action='store_true',
             help='re-run program/module even on error')
     grp = opt.add_mutually_exclusive_group()
