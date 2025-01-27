@@ -3,7 +3,6 @@ PYNAME = $(subst -,_,$(NAME))
 
 check:
 	ruff check $(PYNAME).py
-	flake8 $(PYNAME).py
 	mypy $(PYNAME).py
 	pyright $(PYNAME).py
 	vermin -vv --no-tips -i $(PYNAME).py
