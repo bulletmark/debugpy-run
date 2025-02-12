@@ -42,7 +42,7 @@ allow_redefinition = true
 
 [tool.edit-lint]
 linters = [
-  "ruff",
+  "ruff check",
   "mypy",
   "pyright",
 ]
