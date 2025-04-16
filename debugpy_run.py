@@ -21,7 +21,7 @@ EXTOPTS = '-Xfrozen_modules=off'
 
 def sortdir(val) -> Version:
     'Calculate a sort hash for given dir'
-    sval = re.sub(f'^.*/{EXTNAME}-', '', str(val))
+    sval = re.sub(f'^.*/{EXTNAME}-', '', val.as_posix())
     sval = re.sub('[-/].*$', '', sval)
     return parse(sval)
 
