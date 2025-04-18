@@ -9,10 +9,10 @@ check:
 
 build:
 	rm -rf dist
-	python3 -m build
+	uv build
 
 upload: build
-	twine3 upload dist/*
+	uv-publish
 
 doc:
 	update-readme-usage

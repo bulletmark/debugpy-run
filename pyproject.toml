@@ -6,6 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "debugpy-run"
 description = "Finds and runs debugpy for VS Code \"remote attach\" command line debugging"
 readme = "README.md"
+license = "GPL-3.0-or-later"
 requires-python = ">=3.6"
 keywords = ["debugpy", "vscode", "code", "ptvsd"]
 classifiers = [
@@ -26,9 +27,6 @@ Homepage = "https://github.com/bulletmark/debugpy-run"
 
 [project.scripts]
 debugpy-run = "debugpy_run:main"
-
-[project.license]
-text = "GPLv3"
 
 [tool.setuptools_scm]
 version_scheme = "post-release"
