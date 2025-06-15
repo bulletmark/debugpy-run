@@ -22,7 +22,7 @@ This [question on
 stackoverflow](https://stackoverflow.com/questions/43704747/visual-studio-code-run-python-file-with-arguments)
 describes the problem, but there is no adequate solution. This utility
 provides a solution, follow the [procedure to use
-it](http:/#procedure-to-use) below.
+it](#procedure-to-use) below.
 
 If you have the [VS Code Python
 extension](https://code.visualstudio.com/docs/languages/python)
