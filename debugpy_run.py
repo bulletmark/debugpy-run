@@ -8,6 +8,7 @@ global/venv installed "debugpy".
 # Author: Mark Blakeney, July 2020
 import re
 import subprocess
+import shlex
 import sys
 from argparse import REMAINDER, ArgumentParser, Namespace
 from pathlib import Path
@@ -21,7 +22,8 @@ EXTOPTS = '-Xfrozen_modules=off'
 
 def sortdir(val) -> Version:
     'Calculate a sort hash for given dir'
-    sval = re.sub(f'^.*/{EXTNAME}-', '', val.as_posix())
+    ext = re.escape(EXTNAME)
+    sval = re.sub(f'^.*/{ext}-', '', val.as_posix())
     sval = re.sub('[-/].*$', '', sval)
     return parse(sval)
 
@@ -118,7 +120,7 @@ def main():
     elif args.module:
         mainargs = f'-m {args.module}'
     elif args.code:
-        mainargs = f'-c {args.module}'
+        mainargs = f'-c "{args.code}"'
     elif args.pid:
         mainargs = f'--pid {args.pid}'
     else:
@@ -141,7 +143,7 @@ def main():
     cargs = (' ' + ' '.join(cargslist)) if cargslist else ''
 
     cmdargs = f'--{ctype} {args.port}{wait}{cargs}{logto} {mainargs}'
-    command = f'python3 {EXTOPTS} {cmd} {cmdargs}'.split()
+    command = shlex.split(f'python3 {EXTOPTS} {cmd} {cmdargs}')
     if args.args:
         command.extend(args.args)
 
