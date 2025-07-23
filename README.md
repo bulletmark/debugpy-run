@@ -189,7 +189,8 @@ options:
   -C, --connect        connect to given port rather than listen
   -W, --no-wait        do not wait on listen for client, start immediately
   -p, --port PORT      [host:]port to use, default=5678
-  -E, --no-extension   don't use the debugpy bundled in the extension
+  -E, --no-extension   use installed debugpy package, not one bundled in the
+                       extension
   -r, --run-on-error   re-run program/module even on error
   --log-to PATH        log to given path
   --log-to-stderr      log to stderr

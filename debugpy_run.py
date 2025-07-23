@@ -32,7 +32,7 @@ def sortdir(val) -> Version:
 
 def find_debugger(args: Namespace) -> str:
     "Return which debugger to use"
-    # First look for module bundled with the extension
+    # First look for package bundled with the extension
     if not args.no_extension:
         pdirs = list(Path("~").expanduser().glob(f".vscode*/extensions/{EXTNAME}-*"))
 
@@ -51,7 +51,7 @@ def find_debugger(args: Namespace) -> str:
             if pkg.exists():
                 return str(pkg)
 
-    # Otherwise we didn't find the vscode module so use the global module
+    # Otherwise we didn't find the vscode bundled package so use the global package
     return f"-m {PROG}"
 
 
@@ -85,7 +85,7 @@ def main():
         "-E",
         "--no-extension",
         action="store_true",
-        help=f"don't use the {PROG} bundled in the extension",
+        help=f"use installed {PROG} package, not one bundled in the extension",
     )
     opt.add_argument(
         "-r",
