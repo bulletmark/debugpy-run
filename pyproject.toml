@@ -16,6 +16,7 @@ dynamic = ["version"]
 dependencies = [
   "packaging",
   "debugpy",
+  "psutil",
 ]
 
 [[project.authors]]

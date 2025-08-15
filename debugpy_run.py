@@ -20,6 +20,7 @@ PROG = "debugpy"
 EXTNAME = f"ms-python.{PROG}"
 EXTSUBPATH = f"bundled/libs/{PROG}"
 EXTOPTS = "-Xfrozen_modules=off"
+ADAPTER = f"/{PROG}/adapter"
 
 
 def sortdir(val) -> Version:
@@ -32,7 +33,7 @@ def sortdir(val) -> Version:
 
 def find_debugger(args: Namespace) -> str:
     "Return which debugger to use"
-    # First look for package bundled with the extension
+    # First look for module bundled with the extension
     if not args.no_extension:
         pdirs = list(Path("~").expanduser().glob(f".vscode*/extensions/{EXTNAME}-*"))
 
@@ -51,8 +52,27 @@ def find_debugger(args: Namespace) -> str:
             if pkg.exists():
                 return str(pkg)
 
-    # Otherwise we didn't find the vscode bundled package so use the global package
+    # Otherwise we didn't find the vscode module so use the global module
     return f"-m {PROG}"
+
+
+def kill_debug_adapter(port: str) -> None:
+    "Kill the debug adapter process listening on the given port"
+    import psutil  # type: ignore[import]
+
+    for proc in psutil.process_iter(["cmdline"]):
+        try:
+            cmdline = proc.cmdline()
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+
+        if port in cmdline and any(arg.endswith(ADAPTER) for arg in cmdline):
+            proc.kill()
+            print(f"Killed debug adapter for port {port} before re-running.")
+            return
+
+    print(f"No debug adapter found to kill for port {port}.", file=sys.stderr)
+    return
 
 
 def main():
@@ -85,13 +105,19 @@ def main():
         "-E",
         "--no-extension",
         action="store_true",
-        help=f"use installed {PROG} package, not one bundled in the extension",
+        help=f"use the installed {PROG} package, not the one bundled in the VS Code extension",
     )
     opt.add_argument(
         "-r",
         "--run-on-error",
         action="store_true",
         help="re-run program/module even on error",
+    )
+    opt.add_argument(
+        "-K",
+        "--kill-adapter",
+        action="store_true",
+        help="kill any existing debugpy adapter on the specified port before re-running",
     )
     grp = opt.add_mutually_exclusive_group()
     grp.add_argument("--log-to", metavar="PATH", help="log to given path")
@@ -183,6 +209,9 @@ def main():
         else:
             if not args.run_on_error and res.returncode != 0:
                 break
+
+        if args.kill_adapter:
+            kill_debug_adapter(args.port)
 
 
 if __name__ == "__main__":

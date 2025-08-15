@@ -169,7 +169,7 @@ Code](https://code.visualstudio.com/) as your normal user.
 Type `debugpy-run -h` to view the usage summary:
 
 ```
-usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-E] [-r]
+usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-E] [-r] [-K]
                       [--log-to PATH | --log-to-stderr] [-m MODULE | -c CODE |
                       --pid PID] [-V]
                       [program] ...
@@ -189,9 +189,11 @@ options:
   -C, --connect        connect to given port rather than listen
   -W, --no-wait        do not wait on listen for client, start immediately
   -p, --port PORT      [host:]port to use, default=5678
-  -E, --no-extension   use installed debugpy package, not one bundled in the
-                       extension
+  -E, --no-extension   use the installed debugpy package, not the one bundled
+                       in the VS Code extension
   -r, --run-on-error   re-run program/module even on error
+  -K, --kill-adapter   kill any existing debugpy adapter on the specified port
+                       before re-running
   --log-to PATH        log to given path
   --log-to-stderr      log to stderr
   -m, --module MODULE  python module to execute and debug
@@ -211,7 +213,7 @@ version.
 This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-Public License at <http://www.gnu.org/licenses/> for more details.
+Public License at <https://en.wikipedia.org/wiki/GNU_General_Public_License> for more details.
 
 [pipx]: https://github.com/pypa/pipx
 [pipxu]: https://github.com/bulletmark/pipxu
