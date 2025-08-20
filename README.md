@@ -113,16 +113,16 @@ $ uv tool uninstall debugpy-run
    shell history and editing commands) and then restart the debug
    session in [VS Code](https://code.visualstudio.com/).
 
-### Choosing Python Interpreter/Environment
+## Choosing Python Interpreter/Environment
 
-By default, `debugpy-run` uses the `python3` interpreter available to the
-environment in which you run it. You can specify the Python interpreter or
-environment to use with the `-P` or `--python` option. This even supports
-specifying a multi-argument command that ends with `python`, so you can use `uv
-run` ephemeral environments:
+By default, `debugpy-run` uses the `python3` interpreter available in the path
+of the environment in which you run it. You can specify an alternative Python
+interpreter with the `-P` or `--python` option. This also supports specifying a
+multi-argument command that ends with `python`, so you can use `uv run`
+ephemeral environments, e.g:
 
 ````
-$ debugpy-run -P 'uv run --python 3.12 --with some-package -- python' test-script.py
+$ debugpy-run -P "uv run --python 3.12 --with some-package -- python" test-script.py
 ````
 
 ## Remote Debugging On Another Host
