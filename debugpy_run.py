@@ -50,7 +50,7 @@ def find_debugger(args: Namespace) -> str:
             pkg = extdir / EXTSUBPATH
 
             if pkg.exists():
-                return str(pkg)
+                return pkg.as_posix()
 
     # Otherwise we didn't find the vscode module so use the global module
     return f"-m {PROG}"
