@@ -127,6 +127,12 @@ def main():
     grp.add_argument("-c", "--code", help="python code to execute and debug")
     grp.add_argument("--pid", help="python pid to attach and debug")
     opt.add_argument(
+        "-P",
+        "--python",
+        default="python3",
+        help="python interpreter (or multiple-argument command ending with python) to use, default=%(default)s",
+    )
+    opt.add_argument(
         "-V", "--version", action="store_true", help=f"output {PROG} path and version"
     )
     opt.add_argument("program", nargs="?", help="python program to execute and debug")
@@ -146,17 +152,18 @@ def main():
 
     args = opt.parse_args(argslist)
 
+    python_cmd = args.python
     cmd = find_debugger(args)
 
     if args.version:
         res = subprocess.run(
-            f"python3 {EXTOPTS} {cmd} --version".split(),
+            f"{python_cmd} {EXTOPTS} {cmd} --version".split(),
             universal_newlines=True,
             stdout=subprocess.PIPE,
         )
         vers = res.stdout and res.stdout.strip()
         if vers:
-            print(f"python3 {cmd} {res.stdout.strip()}")
+            print(f"{python_cmd} {cmd} {res.stdout.strip()}")
         return
 
     if args.program and (args.module or args.code or args.pid):
@@ -193,7 +200,7 @@ def main():
     cargs = (" " + " ".join(cargslist)) if cargslist else ""
 
     cmdargs = f"--{ctype} {args.port}{wait}{cargs}{logto} {mainargs}"
-    command = shlex.split(f"python3 {EXTOPTS} {cmd} {cmdargs}")
+    command = shlex.split(f"{python_cmd} {EXTOPTS} {cmd} {cmdargs}")
     if args.args:
         command.extend(args.args)
 
