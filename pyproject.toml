@@ -34,7 +34,6 @@ version_scheme = "post-release"
 
 [tool.mypy]
 implicit_optional = true
-no_strict_optional = true
 warn_no_return = false
 allow_untyped_globals = true
 allow_redefinition = true

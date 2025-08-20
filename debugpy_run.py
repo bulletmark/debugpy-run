@@ -157,7 +157,7 @@ def main():
 
     if args.version:
         res = subprocess.run(
-            f"{python_cmd} {EXTOPTS} {cmd} --version".split(),
+            shlex.split(f"{python_cmd} {EXTOPTS} {cmd} --version"),
             universal_newlines=True,
             stdout=subprocess.PIPE,
         )
