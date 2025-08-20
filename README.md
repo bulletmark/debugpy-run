@@ -212,7 +212,7 @@ options:
   -c, --code CODE      python code to execute and debug
   --pid PID            python pid to attach and debug
   -P, --python PYTHON  python interpreter (or multiple-argument command ending
-                       with python) to use, default=python3
+                       with python) to use, default="python3"
   -V, --version        output debugpy path and version
 ```
 

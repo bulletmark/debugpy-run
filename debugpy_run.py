@@ -130,7 +130,7 @@ def main():
         "-P",
         "--python",
         default="python3",
-        help="python interpreter (or multiple-argument command ending with python) to use, default=%(default)s",
+        help='python interpreter (or multiple-argument command ending with python) to use, default="%(default)s"',
     )
     opt.add_argument(
         "-V", "--version", action="store_true", help=f"output {PROG} path and version"
