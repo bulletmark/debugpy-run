@@ -11,6 +11,7 @@ import re
 import shlex
 import subprocess
 import sys
+import time
 from argparse import REMAINDER, ArgumentParser, Namespace
 from pathlib import Path
 
@@ -56,7 +57,7 @@ def find_debugger(args: Namespace) -> str:
     return f"-m {PROG}"
 
 
-def kill_debug_adapter(port: str) -> None:
+def kill_debug_adapter(port: str, first_run: bool) -> bool:
     "Kill the debug adapter process listening on the given port"
     import psutil  # type: ignore[import]
 
@@ -68,11 +69,14 @@ def kill_debug_adapter(port: str) -> None:
 
         if port in cmdline and any(arg.endswith(ADAPTER) for arg in cmdline):
             proc.kill()
-            print(f"Killed debug adapter for port {port} before re-running.")
-            return
+            action = "running" if first_run else "re-running"
+            print(f"Killed debug adapter for port {port} before {action}.")
+            return True
 
-    print(f"No debug adapter found to kill for port {port}.", file=sys.stderr)
-    return
+    if not first_run:
+        print(f"No debug adapter found to kill for port {port}.", file=sys.stderr)
+
+    return False
 
 
 def main():
@@ -152,6 +156,11 @@ def main():
 
     args = opt.parse_args(argslist)
 
+    # If we need to kill the adapter then we must not be using VS Code so don't
+    # use it's bundled extension
+    if args.kill_adapter:
+        args.no_extension = True
+
     python_cmd = args.python
     cmd = find_debugger(args)
 
@@ -206,7 +215,14 @@ def main():
 
     msg = f"Running {' '.join(command)}"
 
+    first_run = True
     while True:
+        if args.kill_adapter:
+            if kill_debug_adapter(args.port, first_run) and first_run:
+                time.sleep(2)
+
+        first_run = False
+
         print(msg)
         try:
             res = subprocess.run(command)
@@ -216,9 +232,6 @@ def main():
         else:
             if not args.run_on_error and res.returncode != 0:
                 break
-
-        if args.kill_adapter:
-            kill_debug_adapter(args.port)
 
 
 if __name__ == "__main__":
