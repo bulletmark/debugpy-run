@@ -176,6 +176,25 @@ program you run as root. E.g. run a program using `sudo`:
 Now you can just _Remote Attach_ to it in [VS
 Code](https://code.visualstudio.com/) as your normal user.
 
+## Using with Zed Code Editor
+
+The [Zed editor](https://zed.dev/) does not terminate `debugpy-adapter` when
+closing a debug session, as per [this
+issue](https://github.com/zed-industries/zed/issues/34266).
+
+You use the following command line to use `debugpy-run` with Zed editor:
+
+    $ debugpy-run -K myprog.py -- [--myprog-args ..]
+
+Using the `-K/--kill-adapter` option makes `debugpy-run` kill any existing
+`debugpy-adapter` process before starting or restarting the debug session.
+
+If you use this option with Zed then note that when debugging you can't
+immediately press the "rerun session" button. You must press "detach" or
+"terminate all threads" then wait a second or so before pressing "rerun
+session" to give time for the adapter to be killed and the port to be
+re-available.
+
 ## Usage
 
 Type `debugpy-run -h` to view the usage summary:
