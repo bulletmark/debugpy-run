@@ -38,6 +38,9 @@ warn_no_return = false
 allow_untyped_globals = true
 allow_redefinition = true
 
+[tool.ty.environment]
+python = "/usr/bin/python"
+
 [tool.edit-lint]
 linters = [
   "ruff check",

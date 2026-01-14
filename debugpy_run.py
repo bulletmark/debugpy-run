@@ -59,7 +59,7 @@ def find_debugger(args: Namespace) -> str:
 
 def kill_debug_adapter(port: str, first_run: bool) -> bool:
     "Kill the debug adapter process listening on the given port"
-    import psutil  # type: ignore[import]
+    import psutil
 
     for proc in psutil.process_iter(["cmdline"]):
         try:
