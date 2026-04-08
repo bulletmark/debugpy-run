@@ -56,8 +56,7 @@ AUR](https://aur.archlinux.org/packages/debugpy-run/).
 Python 3.6 or later is required. Also, the Python
 [packaging](https://pypi.org/project/packaging/) module is required.
 Note [debugpy-run is on PyPI](https://pypi.org/project/debugpy-run/) so
-the easiest way to install it is to use [`uv tool`][uvtool] (or
-[`pipx`][pipx] or [`pipxu`][pipxu]).
+the easiest way to install it is to use [`uv tool`][uvtool].
 
 ```sh
 $ uv tool install debugpy-run
@@ -142,8 +141,8 @@ first make sure I install the necessary software on the server (you can
 also do this in the programs virtual environment of course):
 
 ````
-$ pipx install debugpy
-$ pipx install debugpy-run
+$ uv tool install debugpy
+$ uv tool install debugpy-run
 ````
 
 The start my program on the server using the debugger:
@@ -248,8 +247,6 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
 Public License at <https://en.wikipedia.org/wiki/GNU_General_Public_License> for more details.
 
-[pipx]: https://github.com/pypa/pipx
-[pipxu]: https://github.com/bulletmark/pipxu
 [uvtool]: https://docs.astral.sh/uv/guides/tools/#installing-tools
 
 <!-- vim: se ai syn=markdown: -->
