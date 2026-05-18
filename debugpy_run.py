@@ -106,10 +106,10 @@ def main():
         '-p', '--port', default='5678', help='[host:]port to use, default=%(default)s'
     )
     opt.add_argument(
-        '-E',
-        '--no-extension',
+        '-K',
+        '--kill-adapter',
         action='store_true',
-        help=f'use the installed {PROG} package, not the one bundled in the VS Code extension',
+        help='kill any existing debugpy adapter on the specified port before re-running',
     )
     opt.add_argument(
         '-r',
@@ -118,10 +118,10 @@ def main():
         help='re-run program/module even on error',
     )
     opt.add_argument(
-        '-K',
-        '--kill-adapter',
+        '-E',
+        '--no-extension',
         action='store_true',
-        help='kill any existing debugpy adapter on the specified port before re-running',
+        help=f'use the system installed {PROG} package, not the one bundled in the VS Code extension',
     )
     grp = opt.add_mutually_exclusive_group()
     grp.add_argument('--log-to', metavar='PATH', help='log to given path')

@@ -199,7 +199,7 @@ re-available.
 Type `debugpy-run -h` to view the usage summary:
 
 ```
-usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-E] [-r] [-K]
+usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-K] [-r] [-E]
                       [--log-to PATH | --log-to-stderr] [-m MODULE | -c CODE |
                       --pid PID] [-P PYTHON] [-V]
                       [program] ...
@@ -219,11 +219,11 @@ options:
   -C, --connect        connect to given port rather than listen
   -W, --no-wait        do not wait on listen for client, start immediately
   -p, --port PORT      [host:]port to use, default=5678
-  -E, --no-extension   use the installed debugpy package, not the one bundled
-                       in the VS Code extension
-  -r, --run-on-error   re-run program/module even on error
   -K, --kill-adapter   kill any existing debugpy adapter on the specified port
                        before re-running
+  -r, --run-on-error   re-run program/module even on error
+  -E, --no-extension   use the system installed debugpy package, not the one
+                       bundled in the VS Code extension
   --log-to PATH        log to given path
   --log-to-stderr      log to stderr
   -m, --module MODULE  python module to execute and debug
