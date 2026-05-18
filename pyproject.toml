@@ -38,14 +38,11 @@ warn_no_return = false
 allow_untyped_globals = true
 allow_redefinition = true
 
+[tool.ruff.format]
+quote-style = "single"
+skip-magic-trailing-comma = true
+
 [tool.ty.environment]
 python = "/usr/bin/python"
-
-[tool.edit-lint]
-linters = [
-  "ruff check",
-  "mypy",
-  "pyright",
-]
 
 # vim:se sw=2:

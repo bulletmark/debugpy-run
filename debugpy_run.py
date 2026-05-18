@@ -17,18 +17,18 @@ from pathlib import Path
 
 from packaging.version import Version, parse
 
-PROG = "debugpy"
-EXTNAME = f"ms-python.{PROG}"
-EXTSUBPATH = f"bundled/libs/{PROG}"
-EXTOPTS = "-Xfrozen_modules=off"
-ADAPTER = f"/{PROG}/adapter"
+PROG = 'debugpy'
+EXTNAME = f'ms-python.{PROG}'
+EXTSUBPATH = f'bundled/libs/{PROG}'
+EXTOPTS = '-Xfrozen_modules=off'
+ADAPTER = f'/{PROG}/adapter'
 
 
 def sortdir(val) -> Version:
     "Calculate a sort hash for given dir"
     ext = re.escape(EXTNAME)
-    sval = re.sub(f"^.*/{ext}-", "", val.as_posix())
-    sval = re.sub("[-/].*$", "", sval)
+    sval = re.sub(f'^.*/{ext}-', '', val.as_posix())
+    sval = re.sub('[-/].*$', '', sval)
     return parse(sval)
 
 
@@ -36,7 +36,7 @@ def find_debugger(args: Namespace) -> str:
     "Return which debugger to use"
     # First look for module bundled with the extension
     if not args.no_extension:
-        pdirs = list(Path("~").expanduser().glob(f".vscode*/extensions/{EXTNAME}-*"))
+        pdirs = list(Path('~').expanduser().glob(f'.vscode*/extensions/{EXTNAME}-*'))
 
         # Filter out to dirs only
         if pdirs:
@@ -54,14 +54,14 @@ def find_debugger(args: Namespace) -> str:
                 return pkg.as_posix()
 
     # Otherwise we didn't find the vscode module so use the global module
-    return f"-m {PROG}"
+    return f'-m {PROG}'
 
 
 def kill_debug_adapter(port: str, first_run: bool) -> bool:
     "Kill the debug adapter process listening on the given port"
     import psutil
 
-    for proc in psutil.process_iter(["cmdline"]):
+    for proc in psutil.process_iter(['cmdline']):
         try:
             cmdline = proc.cmdline()
         except (psutil.NoSuchProcess, psutil.AccessDenied):
@@ -69,12 +69,12 @@ def kill_debug_adapter(port: str, first_run: bool) -> bool:
 
         if port in cmdline and any(arg.endswith(ADAPTER) for arg in cmdline):
             proc.kill()
-            action = "running" if first_run else "re-running"
-            print(f"Killed debug adapter for port {port} before {action}.")
+            action = 'running' if first_run else 're-running'
+            print(f'Killed debug adapter for port {port} before {action}.')
             return True
 
     if not first_run:
-        print(f"No debug adapter found to kill for port {port}.", file=sys.stderr)
+        print(f'No debug adapter found to kill for port {port}.', file=sys.stderr)
 
     return False
 
@@ -85,69 +85,69 @@ def main():
     opt = ArgumentParser(description=__doc__)
     grp = opt.add_mutually_exclusive_group()
     grp.add_argument(
-        "--listen",
-        action="store_true",
+        '--listen',
+        action='store_true',
         default=True,
-        help="listen on given port, default=True",
+        help='listen on given port, default=True',
     )
     grp.add_argument(
-        "-C",
-        "--connect",
-        action="store_true",
-        help="connect to given port rather than listen",
+        '-C',
+        '--connect',
+        action='store_true',
+        help='connect to given port rather than listen',
     )
     opt.add_argument(
-        "-W",
-        "--no-wait",
-        action="store_true",
-        help="do not wait on listen for client, start immediately",
+        '-W',
+        '--no-wait',
+        action='store_true',
+        help='do not wait on listen for client, start immediately',
     )
     opt.add_argument(
-        "-p", "--port", default="5678", help="[host:]port to use, default=%(default)s"
+        '-p', '--port', default='5678', help='[host:]port to use, default=%(default)s'
     )
     opt.add_argument(
-        "-E",
-        "--no-extension",
-        action="store_true",
-        help=f"use the installed {PROG} package, not the one bundled in the VS Code extension",
+        '-E',
+        '--no-extension',
+        action='store_true',
+        help=f'use the installed {PROG} package, not the one bundled in the VS Code extension',
     )
     opt.add_argument(
-        "-r",
-        "--run-on-error",
-        action="store_true",
-        help="re-run program/module even on error",
+        '-r',
+        '--run-on-error',
+        action='store_true',
+        help='re-run program/module even on error',
     )
     opt.add_argument(
-        "-K",
-        "--kill-adapter",
-        action="store_true",
-        help="kill any existing debugpy adapter on the specified port before re-running",
+        '-K',
+        '--kill-adapter',
+        action='store_true',
+        help='kill any existing debugpy adapter on the specified port before re-running',
     )
     grp = opt.add_mutually_exclusive_group()
-    grp.add_argument("--log-to", metavar="PATH", help="log to given path")
-    grp.add_argument("--log-to-stderr", action="store_true", help="log to stderr")
+    grp.add_argument('--log-to', metavar='PATH', help='log to given path')
+    grp.add_argument('--log-to-stderr', action='store_true', help='log to stderr')
     grp = opt.add_mutually_exclusive_group()
-    grp.add_argument("-m", "--module", help="python module to execute and debug")
-    grp.add_argument("-c", "--code", help="python code to execute and debug")
-    grp.add_argument("--pid", help="python pid to attach and debug")
+    grp.add_argument('-m', '--module', help='python module to execute and debug')
+    grp.add_argument('-c', '--code', help='python code to execute and debug')
+    grp.add_argument('--pid', help='python pid to attach and debug')
     opt.add_argument(
-        "-P",
-        "--python",
-        default="python3",
+        '-P',
+        '--python',
+        default='python3',
         help='python interpreter (or multiple-argument command ending with python) to use, default="%(default)s"',
     )
     opt.add_argument(
-        "-V", "--version", action="store_true", help=f"output {PROG} path and version"
+        '-V', '--version', action='store_true', help=f'output {PROG} path and version'
     )
-    opt.add_argument("program", nargs="?", help="python program to execute and debug")
-    opt.add_argument("args", nargs=REMAINDER, help="remaining arguments to debug")
+    opt.add_argument('program', nargs='?', help='python program to execute and debug')
+    opt.add_argument('args', nargs=REMAINDER, help='remaining arguments to debug')
 
     # Split out special case configure arguments
     argslist = []
     cargslist = []
     takenext = False
     for arg in sys.argv[1:]:
-        if takenext or arg.startswith("--configure-"):
+        if takenext or arg.startswith('--configure-'):
             takenext = not takenext
             cargslist.append(arg)
         else:
@@ -166,13 +166,13 @@ def main():
 
     if args.version:
         res = subprocess.run(
-            shlex.split(f"{python_cmd} {EXTOPTS} {cmd} --version"),
+            shlex.split(f'{python_cmd} {EXTOPTS} {cmd} --version'),
             universal_newlines=True,
             stdout=subprocess.PIPE,
         )
         vers = res.stdout and res.stdout.strip()
         if vers:
-            print(f"{python_cmd} {cmd} {res.stdout.strip()}")
+            print(f'{python_cmd} {cmd} {res.stdout.strip()}')
         return
 
     if args.program and (args.module or args.code or args.pid):
@@ -181,39 +181,39 @@ def main():
 
     if args.program:
         if not Path(args.program).exists():
-            opt.error(f"No such file: {args.program}.")
+            opt.error(f'No such file: {args.program}.')
         mainargs = args.program
     elif args.module:
-        mainargs = f"-m {args.module}"
+        mainargs = f'-m {args.module}'
     elif args.code:
         mainargs = f'-c "{args.code}"'
     elif args.pid:
-        mainargs = f"--pid {args.pid}"
+        mainargs = f'--pid {args.pid}'
     else:
-        opt.error("Must specify program, module, code, or pid.")
+        opt.error('Must specify program, module, code, or pid.')
 
     if args.connect:
-        ctype = "connect"
-        wait = ""
+        ctype = 'connect'
+        wait = ''
     else:
-        ctype = "listen"
-        wait = "" if args.no_wait else " --wait-for-client"
+        ctype = 'listen'
+        wait = '' if args.no_wait else ' --wait-for-client'
 
     if args.log_to:
-        logto = f" --log-to {args.log_to}"
+        logto = f' --log-to {args.log_to}'
     elif args.log_to_stderr:
-        logto = " --log-to-stderr"
+        logto = ' --log-to-stderr'
     else:
-        logto = ""
+        logto = ''
 
-    cargs = (" " + " ".join(cargslist)) if cargslist else ""
+    cargs = (' ' + ' '.join(cargslist)) if cargslist else ''
 
-    cmdargs = f"--{ctype} {args.port}{wait}{cargs}{logto} {mainargs}"
-    command = shlex.split(f"{python_cmd} {EXTOPTS} {cmd} {cmdargs}")
+    cmdargs = f'--{ctype} {args.port}{wait}{cargs}{logto} {mainargs}'
+    command = shlex.split(f'{python_cmd} {EXTOPTS} {cmd} {cmdargs}')
     if args.args:
         command.extend(args.args)
 
-    msg = f"Running {' '.join(command)}"
+    msg = f'Running {" ".join(command)}'
 
     first_run = True
     while True:
@@ -234,5 +234,5 @@ def main():
                 break
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())
