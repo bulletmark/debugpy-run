@@ -200,9 +200,9 @@ Type `debugpy-run -h` to view the usage summary:
 
 ```
 usage: debugpy-run [-h] [--listen | -C] [-W] [-p PORT] [-K] [-r] [-E]
-                      [--log-to PATH | --log-to-stderr] [-m MODULE | -c CODE |
-                      --pid PID] [-P PYTHON] [-V]
-                      [program] ...
+                   [--log-to PATH | --log-to-stderr] [-m MODULE | -c CODE |
+                   --pid PID] [-P PYTHON] [-V]
+                   [program] ...
 
 Finds the "debugpy" package within your VSCode Python extension and then runs
 it for "remote attach" debugging of the program/module you specify. If not

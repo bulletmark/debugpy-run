@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 Finds the "debugpy" package within your VSCode Python extension and then runs
 it for "remote attach" debugging of the program/module you specify. If not
@@ -43,11 +42,7 @@ def find_debugger(args: Namespace) -> str:
             pdirs = [d for d in pdirs if d.is_dir()]
 
         if pdirs:
-            extdir = (
-                sorted(pdirs, reverse=True, key=sortdir)[0]
-                if len(pdirs) > 1
-                else pdirs[0]
-            )
+            extdir = max(pdirs, key=sortdir)
             pkg = extdir / EXTSUBPATH
 
             if pkg.exists():
@@ -165,11 +160,8 @@ def main():
     cmd = find_debugger(args)
 
     if args.version:
-        res = subprocess.run(
-            shlex.split(f'{python_cmd} {EXTOPTS} {cmd} --version'),
-            universal_newlines=True,
-            stdout=subprocess.PIPE,
-        )
+        cmd = shlex.split(f'{python_cmd} {EXTOPTS} {cmd} --version')
+        res = subprocess.run(cmd, text=True, stdout=subprocess.PIPE)
         vers = res.stdout and res.stdout.strip()
         if vers:
             print(f'{python_cmd} {cmd} {res.stdout.strip()}')
@@ -217,9 +209,8 @@ def main():
 
     first_run = True
     while True:
-        if args.kill_adapter:
-            if kill_debug_adapter(args.port, first_run) and first_run:
-                time.sleep(2)
+        if args.kill_adapter and kill_debug_adapter(args.port, first_run) and first_run:
+            time.sleep(2)
 
         first_run = False
 
